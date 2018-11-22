@@ -164,7 +164,7 @@ public class Database {
             ResultSet rs = stmt.executeQuery("select pid from employees order by empname;");
             while (rs.next())
             {
-                if (rs.getInt(1) != 12 && rs.getInt(1) != 14 && rs.getInt(1) != 15)//manually exempt employees from clock in
+                if (rs.getInt(1) != 12 && rs.getInt(1) != 14 && rs.getInt(1) != 15&& rs.getInt(1) != 10&& rs.getInt(1) != 11)//manually exempt employees from clock in
                 {
                     bigList.add(rs.getInt(1));
                 }
