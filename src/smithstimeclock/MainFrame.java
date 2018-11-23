@@ -23,7 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
     protected ArrayList<Employee> employees = new ArrayList<>();
     DateTimeFormatter sdf = DateTimeFormatter.ofPattern("h:mm:ss a    EEEE, MMMM d, yyyy");
     private JLabel clock = new JLabel("", SwingConstants.LEFT);
-    private JLabel versionHeader = new JLabel("Version 1.0.0", SwingConstants.LEFT);
+    private JLabel versionHeader = new JLabel("Version 1.0.1", SwingConstants.LEFT);
     Timer timer;
     TopMenuBar menuBar;
     private JTextField textField = new JTextField(10);
@@ -41,7 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
         loadEmployees();
         menuBar = new TopMenuBar(this,employees);//Hollie's Menu Bar!
         this.setJMenuBar(menuBar);
-        textField.setBounds(100, 950, 100, 20);
+        textField.setBounds(100, 700, 100, 20);
         //textField.isVisible(true);
         textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -88,7 +88,7 @@ public class MainFrame extends javax.swing.JFrame {
         for (int pid : Database.getEmployeesPIDs())
         {
             Employee temp = new Employee(pid);
-            temp.setPosition(800, cntr + 50);
+            temp.setPosition(650, cntr + 50);
             temp.setLabel();
             this.add(temp.getLabel());
             this.add(temp.getStatusLabel());
@@ -110,13 +110,13 @@ public class MainFrame extends javax.swing.JFrame {
         timer.start();
         
         //versionHeader
-        versionHeader.setLocation(1800, 950);
+        versionHeader.setLocation(1300, 700);
         versionHeader.setSize(250, 50);
         versionHeader.setFont(new Font(versionHeader.getName(), Font.BOLD, 12));
         versionHeader.setVisible(true);
         this.add(versionHeader);
         clock.setVisible(true);
-        clock.setLocation(600, 50);
+        clock.setLocation(450, 50);
         clock.setSize(1000, 50);
         clock.setFont(new Font(clock.getName(), Font.BOLD, 30));
         this.add(clock);
@@ -133,11 +133,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1920, Short.MAX_VALUE)
+                        .addGap(0, 1600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1080, Short.MAX_VALUE)
+                        .addGap(0, 900, Short.MAX_VALUE)
         );
 
         pack();
