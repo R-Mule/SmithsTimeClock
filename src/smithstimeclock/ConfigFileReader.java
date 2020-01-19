@@ -27,6 +27,9 @@ public class ConfigFileReader {
     private static String mailPassword;
     private static String jarPath;
     private static String timeDataPath;
+    private static String gsmModemComPort;
+    private static String gsmModemIP;
+    private static String rxRefillPrinterName;
 
     private ConfigFileReader() //do not instantiate
     {
@@ -50,61 +53,73 @@ public class ConfigFileReader {
                     continue;
                 }
                 System.out.println(tokens[0] + " " + tokens[1]);
-                if (tokens[0].contains("Register ID"))
+                if (tokens[0].contentEquals("Register ID"))
                 {
                     registerID = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Printer Name"))
+                else if (tokens[0].contentEquals("Printer Name"))
                 {
                     printerName = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Database Hostname"))
+                else if (tokens[0].contentEquals("Database Hostname"))
                 {
                     hostName = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Database Username"))
+                else if (tokens[0].contentEquals("Database Username"))
                 {
                     userName = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Database Password"))
+                else if (tokens[0].contentEquals("Database Password"))
                 {
                     password = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Remote Drive Path"))
+                else if (tokens[0].contentEquals("Remote Drive Path"))
                 {
                     remoteDrivePath = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Register Report Path"))
+                else if (tokens[0].contentEquals("Register Report Path"))
                 {
                     Date date = new Date();
                     DateFormat dateFormat = new SimpleDateFormat("MMddyy");
                     registerReportPath = tokens[1].trim() + dateFormat.format(date);
                 }
-                else if (tokens[0].contains("Display Com Port"))
+                else if (tokens[0].contentEquals("Display Com Port"))
                 {
                     displayComPort = tokens[1].trim();
                     // System.out.println(displayComPort);
                 }
-                else if (tokens[0].contains("Card Terminal Address"))
+                else if (tokens[0].contentEquals("Card Terminal Address"))
                 {
                     cardReaderURL = tokens[1].trim();
 
                 }
-                else if (tokens[0].contains("Pharmacy Name"))
+                else if (tokens[0].contentEquals("Pharmacy Name"))
                 {
                     pharmacyName = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Mail Password"))
+                else if (tokens[0].contentEquals("Mail Password"))
                 {
                     mailPassword = tokens[1].trim();
                 }
-                else if (tokens[0].contains("Jar Path"))
+                else if (tokens[0].contentEquals("Jar Path"))
                 {
                     jarPath = tokens[1].trim();
                 }
-                        else if (tokens[0].contains("Time Data Path"))
+                else if (tokens[0].contentEquals("Time Data Path"))
                 {
                     timeDataPath = tokens[1].trim();
+                }
+                else if (tokens[0].contentEquals("GSM Modem COM Port"))
+                {
+                    gsmModemComPort = tokens[1].trim();
+                }
+                else if (tokens[0].contentEquals("GSM Modem IP"))
+                {
+                    gsmModemIP = tokens[1].trim();
+                }
+                else if (tokens[0].contentEquals("Rx Refill Printer Name"))
+                {
+                    rxRefillPrinterName = tokens[1].trim();
                 }
             }//end while
 
@@ -122,14 +137,26 @@ public class ConfigFileReader {
 
     }
 
+    public static String getGSMModemIP() {
+        return gsmModemIP;
+    }
+
+    public static String getGSMModemCOMPort() {
+        return gsmModemComPort;
+    }
+
+    public static String getRxRefillPrinterName() {
+        return rxRefillPrinterName;
+    }
+        
     public static String getTimeDataPath() {
         return timeDataPath;
     }
-    
+
     public static String getJarPath() {
         return jarPath;
     }
-    
+
     public static String getPharmacyName() {
         return pharmacyName;
     }

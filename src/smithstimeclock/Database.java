@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-
 /**
 
  @author R-Mule
@@ -20,8 +19,6 @@ public class Database {
     private static String password;
     //private ConfigFileReader reader;
 
-   
-
     private Database() {
     }//end databaseCtor
 
@@ -31,18 +28,61 @@ public class Database {
         password = ConfigFileReader.getPassword();
 
     }
-/*
-    public static boolean containsEmployeeWithRFID(long rfid) {
-        boolean foundOne = false;
+
+    public static String getRandomJoke() {
+        ArrayList<String> jokes = new ArrayList<>();
         try
         {
-            ArrayList<Integer> bigList = new ArrayList<>();
             Connection con = DriverManager.getConnection(
                     host, userName, password);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select pid from employees where emprfid = "+ rfid +";");
+            ResultSet rs = stmt.executeQuery("select * from jokes;");
             while (rs.next())
             {
+                jokes.add(rs.getString(2));
+            }//end while
+            con.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        int index = (int) (Math.random() * (jokes.size() - 1 - 0) + 0);
+        return jokes.get(index);
+    }
+
+    public static ArrayList<String> getSubscribersAccountNamesByPhoneNumber(String phoneNumber) {
+        ArrayList<String> accountNames = new ArrayList<>();
+        try
+        {
+            Connection con = DriverManager.getConnection(
+                    host, userName, password);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from smssubscribers where phonenumber = '" + phoneNumber + "';");
+            while (rs.next())
+            {
+                accountNames.add(rs.getString(2));
+            }//end while
+            con.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return accountNames;
+    }
+
+    public static boolean isPhoneNumberSubscribed(String phoneNumber) {
+        boolean foundOne = false;
+        try
+        {
+            Connection con = DriverManager.getConnection(
+                    host, userName, password);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from smssubscribers where phonenumber = '" + phoneNumber + "';");
+            while (rs.next())
+            {
+                System.out.println(rs.getString(2));
                 foundOne = true;
             }//end while
             con.close();
@@ -52,8 +92,59 @@ public class Database {
             System.out.println(e);
         }
         return foundOne;
-    }*/
-    
+    }
+
+    public static void deleteSmsMsgFromQueueById(int pid) {
+        try
+        {
+            Connection con = DriverManager.getConnection(
+                    host, userName, password);
+
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("delete from smsmsgqueue where pid = " + pid + ";");
+
+            con.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }//end 
+
+    public static void deleteSmsMsgFromQueueByPhoneNumber(String phoneNumber) {
+        try
+        {
+            Connection con = DriverManager.getConnection(
+                    host, userName, password);
+
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("delete from smsmsgqueue where phonenumber = '" + phoneNumber + "';");
+
+            con.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }//end 
+
+    public static void deleteSmsSubscriberByPhoneNumber(String phoneNumber) {
+        try
+        {
+            Connection con = DriverManager.getConnection(
+                    host, userName, password);
+
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("delete from smssubscribers where phonenumber = '" + phoneNumber + "';");
+
+            con.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }//end 
+
     public static void insertClockData(ClockData cd) {
         try
         {
@@ -164,7 +255,7 @@ public class Database {
             ResultSet rs = stmt.executeQuery("select pid from employees order by empname;");
             while (rs.next())
             {
-                if (rs.getInt(1) != 12 && rs.getInt(1) != 14 && rs.getInt(1) != 15&& rs.getInt(1) != 10&& rs.getInt(1) != 11)//manually exempt employees from clock in
+                if (rs.getInt(1) != 12 && rs.getInt(1) != 14 && rs.getInt(1) != 15 && rs.getInt(1) != 10 && rs.getInt(1) != 11)//manually exempt employees from clock in
                 {
                     bigList.add(rs.getInt(1));
                 }

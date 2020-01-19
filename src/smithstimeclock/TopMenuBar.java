@@ -1,16 +1,20 @@
 package smithstimeclock;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
 
 /**
 
@@ -20,10 +24,11 @@ import javax.swing.JOptionPane;
 public class TopMenuBar extends JMenuBar {
 
     //Class Variables
-    JMenu reports;
-    JMenuItem allEmployees;
+    JMenu reports, system;
+    JMenuItem allEmployees, testSmsOut, testPrint;
     MainFrame mf;
     ArrayList<Employee> employees;
+    DBListener dbl;
 
     //ctor
     public TopMenuBar(MainFrame mf, ArrayList<Employee> employees) {
@@ -32,15 +37,30 @@ public class TopMenuBar extends JMenuBar {
         reports = new JMenu("Reports");
         reports.setMnemonic(KeyEvent.VK_R);
         reports.setVisible(true);
+        system = new JMenu("System");
+        system.setMnemonic(KeyEvent.VK_S);
+        system.setVisible(true);
 
 //Add  menu items
         allEmployees = new JMenuItem();
         allEmployees.setText("All Employees");
         allEmployees.setVisible(true);
-        reports.add(allEmployees);//This adds DME Account Selection to Add Menu Choices
+        reports.add(allEmployees);
+
+        //testSmsOut = new JMenuItem();
+        //testSmsOut.setText("Test SMS Out");
+        //testSmsOut.setVisible(true);
+       //system.add(testSmsOut);
+
+        testPrint = new JMenuItem();
+        testPrint.setText("Test Printer");
+        testPrint.setVisible(true);
+        system.add(testPrint);
 
         this.add(reports);
+        this.add(system);
 
+ 
 //Add menu action listeners
         allEmployees.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -48,8 +68,71 @@ public class TopMenuBar extends JMenuBar {
                 allEmployeesActionPerformed(evt);
             }
         });
-
+        
+        testPrint.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                       JTextPane jtp = new JTextPane();
+        String msgToPrint = "This has been a successful test page print... obviously... Toss a coin to your Witcher\n"
+                + "O’ Valley of Plenty\n"
+                + "O’ Valley of Plenty\n"
+                + "O’\n"
+                + "Toss a coin to Your Witcher\n"
+                + "O’ Valley of Plenty\n"
+                + "At the edge of the world\n"
+                + "Fight the mighty horde\n"
+                + "That bashes and breaks you\n"
+                + "And brings you to mourn\n"
+                + "He thrust every elf\n"
+                + "Far back on the shelf\n"
+                + "High up on the mountain\n"
+                + "From whence it came\n"
+                + "He wiped out your pest\n"
+                + "Got kicked in his chest\n"
+                + "He’s a friend of humanity\n"
+                + "So give him the rest\n"
+                + "That’s my epic tale\n"
+                + "Our champion prevailed\n"
+                + "Defeated the villain\n"
+                + "Now pour him some ale\n"
+                + "Toss a coin to your Witcher\n"
+                + "O’ Valley of Plenty\n"
+                + "O’ Valley of Plenty\n"
+                + "O’\n"
+                + "Toss a coin to your Witcher\n"
+                + "And friend of humanity\n"
+                + "Toss a coin to your Witcher\n"
+                + "O’ Valley of Plenty\n"
+                + "O’ Valley of Plenty\n"
+                + "O’\n"
+                + "And friend of humanity\n"
+                + "Toss a coin to your Witcher\n"
+                + "O’ Valley of Plenty\n"
+                + "O’ Valley of Plenty\n"
+                + "O’\n"
+                + "Toss a coin to your Witcher\n"
+                + "A friend of humanity";
+        jtp.setBackground(Color.white);
+        jtp.setText(msgToPrint);
+        boolean show = false;
+        try
+        {
+            PrintService printService[] = PrintServiceLookup.lookupPrintServices(
+                    null, null);
+            PrintService service = findPrintService(ConfigFileReader.getRxRefillPrinterName(), printService);
+            jtp.print(null, null, show, service, null, show);
+        }
+        catch (java.awt.print.PrinterException ex)
+        {
+            ex.printStackTrace();
+        }
+            }
+        });
     }//end ctor
+
+    public void setDbl(DBListener dbl) {
+        this.dbl = dbl;
+    }
 
     //members/functions
 //Addition menu item functions
@@ -131,7 +214,8 @@ public class TopMenuBar extends JMenuBar {
                         Logger.getLogger(TopMenuBar.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                else{
+                else
+                {
                     JFrame message1 = new JFrame("");
                     JOptionPane.showMessageDialog(message1, "Failed to write the file. Notify Drew.");
                 }
@@ -139,7 +223,7 @@ public class TopMenuBar extends JMenuBar {
             else
             {
                 JFrame message1 = new JFrame("");
-                    JOptionPane.showMessageDialog(message1, "I did not find data. This is bad. Report to Drew.");
+                JOptionPane.showMessageDialog(message1, "I did not find data. This is bad. Report to Drew.");
                 //print error no content to report for date range TODO
             }
 
@@ -170,6 +254,19 @@ public class TopMenuBar extends JMenuBar {
             }
         }
         return totalDayData;
+    }
+
+    private static PrintService findPrintService(String printerName,
+            PrintService[] services) {
+        for (PrintService service : services)
+        {
+            if (service.getName().equalsIgnoreCase(printerName))
+            {
+                return service;
+            }
+        }
+
+        return null;
     }
 
 }

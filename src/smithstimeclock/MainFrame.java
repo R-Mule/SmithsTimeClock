@@ -19,29 +19,31 @@ import javax.swing.Timer;
  @author R-Mule
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    
     protected ArrayList<Employee> employees = new ArrayList<>();
     DateTimeFormatter sdf = DateTimeFormatter.ofPattern("h:mm:ss a    EEEE, MMMM d, yyyy");
     private JLabel clock = new JLabel("", SwingConstants.LEFT);
-    private JLabel versionHeader = new JLabel("Version 1.0.1", SwingConstants.LEFT);
+    private JLabel smsLabel = new JLabel("SMS System Status:",SwingConstants.LEFT);
+    private JLabel versionHeader = new JLabel("Version 2.0", SwingConstants.LEFT);
     Timer timer;
     TopMenuBar menuBar;
+    private DBListener dbl;
+    
+    
     private JTextField textField = new JTextField(10);
-
-
-      
-    public MainFrame() {
-        
+    
+    public MainFrame(JLabel smsStatusIndicator) {
         init();
+        this.add(smsStatusIndicator);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-       // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-       // setResizable(false);
-       // this.set
+        // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        // setResizable(false);
+        // this.set
         //addLabels();
         loadEmployees();
-        menuBar = new TopMenuBar(this,employees);//Hollie's Menu Bar!
+        menuBar = new TopMenuBar(this, employees);//Hollie's Menu Bar!
         this.setJMenuBar(menuBar);
-        textField.setBounds(100, 700, 100, 20);
+        textField.setBounds(100, 925, 100, 20);
         //textField.isVisible(true);
         textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -74,32 +76,36 @@ public class MainFrame extends javax.swing.JFrame {
                         textField.setText("");
                     }
                 }
-
+                
                 textField.setText("");
             }
         });
         this.add(textField);
     }
-
-
+    
+    public void setDbl(DBListener dbl)
+    {
+        this.dbl = dbl;
+        menuBar.setDbl(this.dbl);
+    }
+    
     private void loadEmployees() {
         //For all employees from database
         int cntr = 75;
         for (int pid : Database.getEmployeesPIDs())
         {
             Employee temp = new Employee(pid);
-            temp.setPosition(650, cntr + 50);
+            temp.setPosition(850, cntr + 50);
             temp.setLabel();
             this.add(temp.getLabel());
             this.add(temp.getStatusLabel());
             employees.add(temp);
-
+            
             cntr += 50;
         }
     }//end loadEmployees
 
     private void init() {
-
         updateClock();
         timer = new Timer(1000, new ActionListener() {
             @Override
@@ -108,18 +114,23 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         timer.start();
-        
+
         //versionHeader
-        versionHeader.setLocation(1300, 700);
+        versionHeader.setLocation(1750, 925);
         versionHeader.setSize(250, 50);
         versionHeader.setFont(new Font(versionHeader.getName(), Font.BOLD, 12));
         versionHeader.setVisible(true);
         this.add(versionHeader);
         clock.setVisible(true);
-        clock.setLocation(450, 50);
+        clock.setLocation(650, 50);
         clock.setSize(1000, 50);
         clock.setFont(new Font(clock.getName(), Font.BOLD, 30));
         this.add(clock);
+        smsLabel.setLocation(100, 875);
+        smsLabel.setVisible(true);
+        smsLabel.setSize(150, 50);
+        smsLabel.setFont(new Font("SMS Label", Font.BOLD, 12));
+        this.add(smsLabel);
         this.setTitle("Smith's Time Clock - Developed by: Andrew & Hollie Smith");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
@@ -128,7 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
             public void windowClosing(java.awt.event.WindowEvent evt) {
             }
         });
-
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,13 +150,11 @@ public class MainFrame extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 900, Short.MAX_VALUE)
         );
-
+        
         pack();
     }
-
+    
     private void updateClock() {
-        
-        clock.setText(sdf.format(LocalDateTime.now()));
-
+        clock.setText(sdf.format(LocalDateTime.now()));    
     }
 }

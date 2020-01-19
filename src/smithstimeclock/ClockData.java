@@ -1,7 +1,6 @@
 package smithstimeclock;
 
 import java.time.LocalDateTime;
-
 /**
 
  @author R-Mule
