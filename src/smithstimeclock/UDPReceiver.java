@@ -62,6 +62,10 @@ public class UDPReceiver {
                         {
                             dbl.sendForcedMessage(phoneNumber, "Smith's Super-Aid Normal Business Hours: Mon->Fri: 9:00AM to 7:00PM. Sat: 9:00AM to 2:00PM. Sun: Closed. Please call (540) 726-2993 for Holiday Hours.");
                         }
+                        else if (msgContent.toUpperCase().trim().contains("HELP"))
+                        {
+                            dbl.sendForcedMessage(phoneNumber, "Text STOP to unsubscribe. Text CONTACT for contact information. Text HOURS for non-holiday business hours. Text Rx # for refill.");
+                        }
                         else if (msgContent.toUpperCase().trim().contains("CONTACT"))
                         {
                             dbl.sendForcedMessage(phoneNumber, "Smith's Super-Aid Contact Information: Main Line: (540) 726-2993. Office: (540) 726-2113. Durable Medical Equipment (540) 726-7486. Fax: (540) 726-7331");
