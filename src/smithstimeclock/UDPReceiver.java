@@ -80,7 +80,7 @@ public class UDPReceiver {
                             {
                                 Database.deleteSmsSubscriberByPhoneNumber(phoneNumber);
                                 Database.deleteSmsMsgFromQueueByPhoneNumber(phoneNumber);
-                                dbl.sendForcedMessage(phoneNumber, "You have been successfully unsubscribed.");
+                                dbl.sendForcedMessage(phoneNumber, "You have been unsubscribed.");
                             }
 
                             else if (msgContent.matches("[1-9][0-9][0-9][0-9][0-9][0-9][0-9]"))//If it is a legit rx number best we know.
