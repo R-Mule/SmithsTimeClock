@@ -21,7 +21,7 @@ public class DBListener {
     private String host;
     private String userName;
     private String password;
-    private COMHandler ch;
+    private COMHandler2 ch;
     private JLabel smsStatusIndicator;
 
     public DBListener(JLabel smsStatusIndicator) {
@@ -29,16 +29,16 @@ public class DBListener {
         userName = ConfigFileReader.getUserName();
         password = ConfigFileReader.getPassword();
         this.smsStatusIndicator = smsStatusIndicator;
-        ch = new COMHandler();
-        try
-        {
-            ch.connect(ConfigFileReader.getGSMModemCOMPort());
-        }
-        catch (Exception ex)
-        {
-            this.smsStatusIndicator.setForeground(Color.RED);
-            Logger.getLogger(DBListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ch = new COMHandler2();
+       // try
+       // {
+      //      ch.connect(ConfigFileReader.getGSMModemCOMPort());
+      //  }
+       // catch (Exception ex)
+       // {
+       //     this.smsStatusIndicator.setForeground(Color.RED);
+       //     Logger.getLogger(DBListener.class.getName()).log(Level.SEVERE, null, ex);
+       // }
         beginChecking();
     }
 
