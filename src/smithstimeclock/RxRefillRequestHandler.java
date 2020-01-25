@@ -17,7 +17,7 @@ public class RxRefillRequestHandler {
 
     protected String printerName;
     protected static ArrayList<PatientRxRefillRequest> patientRequests;
-    protected Timer requestTimer;
+    
     //protected PrinterService printerService = new PrinterService();
 
     public RxRefillRequestHandler() {
@@ -50,7 +50,7 @@ public class RxRefillRequestHandler {
             Timer requestTimer = new Timer(300000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
-                    timerTriggered();
+                    timerTriggered(phoneNumber);
                 }
             });
 
@@ -61,11 +61,15 @@ public class RxRefillRequestHandler {
         return true;
     }
 
-    public void timerTriggered() {
+    public void timerTriggered(String phoneNumber) {
         PatientRxRefillRequest foundRequest = null;
         for (PatientRxRefillRequest request : patientRequests)
         {
-            foundRequest = request;
+            if(phoneNumber.contentEquals(request.phoneNumber))
+            {
+                foundRequest = request;
+                break;
+            }
         }
 
         patientRequests.remove(foundRequest);
